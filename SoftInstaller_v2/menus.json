@@ -1,0 +1,76 @@
+{
+"global" : [
+	{
+		"0": 
+		{
+			"type" : "category",
+			"message": "Установка программ",
+			"mymenu" : [
+				"1. Браузеры", 
+				"2. Архиваторы",
+				"3. Офисные программы",
+				"4. Мультимедиа",
+				"5. Общение. Почта."
+			]
+		},
+		
+		"1": 
+		{
+			"type" : "install",
+			"message": "Браузеры",
+			"mymenu": [
+				["1: Mozilla Firefox", "choco install firefox -y"],
+				["2: Google Chrome", "choco install googlechrome -y"],
+				["3: Opera", "choco install opera -y"],
+				["4: Edge", "choco install microsoft-edge -y"]
+			]
+		},
+		"2": 
+		{
+			"type" : "install",
+			"message": "Архиваторы",
+			"mymenu" : [
+				["1: 7-Zip", "choco install 7zip -y"],
+				["2: WinRAR", "choco install winrar -y"]
+			]
+		},
+		"3": 
+		{
+			"type" : "install",
+			"message": "Офисные программы",
+			"mymenu": [
+				["1: Acrobat Reader DC", "choco install adobereader -y"],
+				["2: PDF24", "choco install pdf24 -y"],
+				["3: WPS Office", "choco install wps-office-free -y"],
+				["4: OpenOffice", "choco install openoffice -y"],
+				["5: WinDjView", "choco install windjview -y"],
+				["6: Akelpad", "choco install akelpad -y"]
+			]
+		},
+		"4": 
+		{
+			"type" : "install",
+			"message": "Мультимедиа",
+			"mymenu":[
+				["1: VLC", "choco install vlc -y"],
+				["2: AIMP", "choco install aimp -y"],
+				["3: FastStone Viewer", "choco install fsviewer -y"],
+				["4: IrfanView", "choco install irfanview -y"]
+			]
+		},
+		"5": 
+		{
+			"type" : "install",
+			"message": "Общение. Почта.",
+			"mymenu":[
+				["1: Mozilla Thunderbird", "choco install thunderbird -y"],
+				["2: Viber", "choco install viber -y"],
+				["3: Telegram", "choco install telegram -y"],
+				["4: WhatsApp", "choco install whatsapp -y"],
+				["5: Skype", "choco install skype -y"]
+			]
+		}
+	}
+]
+
+}

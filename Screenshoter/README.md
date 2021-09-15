@@ -12,12 +12,12 @@
 - ScreenFormat: png
 
 Для передачи параметров в exe:
-```
+``` powershell
 screen.exe -Arguments -Path "C:\new folder" -Interval "15" -ScreenFormat "jpg" 
 ```
 
 Для передачи в скрипт
-```
+``` powershell
 screen.ps1 -Path "C:\" -Interval "15" -ScreenFormat "jpg"
 screen.ps1 -Path "C:\new folder" -Interval "15" -ScreenFormat "jpg"
 ```
@@ -30,7 +30,7 @@ Exe-шник без консоли, т.е. не отображается. Кач
 - Descript.txt - описание
 - screen.exe - скомпилированный exe из ps1 при помощи PowerGUI Script Editor (меню Tools > Compile Script).
 	PS2EXE компилится командой:
-	```
+	``` powershell
 	PS C:\> ps2exe.ps1 -inputFile C:\screen.ps1 C:\screen.exe -sta -noConsole
 	```
 	Но скомпилированный PS2EXE  не отрбатывает обработку исключения, не работает вывод.
@@ -41,6 +41,6 @@ Exe-шник без консоли, т.е. не отображается. Кач
 - setup.ps1 - инсталлятор/деинсталлятор
 - setup.bat - запуск setup.ps1
 - screen.ini - файл настроек
-```
+``` powershell
 C:\Users\aa\Dropbox\script\posh\SCREENSHOTER>screen.exe -Arguments -Path "\\192.168.9.15\store\SCREEN\technical" -Interval "15" -ScreenFormat "jpg"
 ```

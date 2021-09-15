@@ -6,4 +6,5 @@
 ЗАПУСК: .\ConvertAddressBook.ps1 [Расположение книги формата .vcf] [Каталог для выходных данных]
 
 Полученные файлы переносим на сервер Kerio Connect в каталог [/opt/kerio/mailserver/store/mail/domain.com/пользователь/Contacts/#msgs]
+
 Переиндексируем пользователя через web-интерфейс Kerio Connect

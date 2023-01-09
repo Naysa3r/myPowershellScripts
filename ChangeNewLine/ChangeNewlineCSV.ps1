@@ -85,28 +85,36 @@ $startButton.Text = 'OK'
 $startButton.Add_Click({
     # Проверка на загруженность файла
     if($FileBrowser.FileName.Contains(".csv")){
-        $csv = $FileBrowser.FileName
+        $csv = $FileBrowser.FileName.Trim(".csv") + '_buffer.csv'
+        Get-Content $FileBrowser.FileName | where {$_ -notmatch '^(\t* *)$'} > $csv
         $reader = New-Object -TypeName System.IO.StreamReader -ArgumentList ($csv)
         $writer = New-Object System.IO.StreamWriter -ArgumentList ((CheckFolder($FolderBrowser.SelectedPath)), $false, [System.Text.Encoding]::UTF8)
         $bufferString = ""
 
         while ($read = $reader.ReadLine()){
             if($read.IndexOf('"').Equals(0)) {
-                if ($bufferString -ne ""){
+                if ($bufferString -ne "" -and $bufferString.EndsWith('"')){
                     $writer.WriteLine($bufferString);
+                    $bufferString = $read
+                } else {
+                    $bufferString += $read
                 }
-                $bufferString = $read
             } else {
                 $bufferString += " " + $read
             }
+            
         }
         $writer.WriteLine($bufferString);
         
         $writer.Close()
         $writer.Dispose()
 
-        $labelStatus.ForeColor = "Green"
-        $labelStatus.Text = "Операция завершена"
+        $labelStatus.ForeColor = "#826e27"
+        $labelStatus.Text = "Первый этап завершен..."
+
+        # Второй этап. Создание файлов на основе строки в "связи с".
+
+
     } else {
         $labelStatus.ForeColor = "Red"
         $labelStatus.Text = "Ошибка выполнения"

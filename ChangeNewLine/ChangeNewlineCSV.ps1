@@ -7,7 +7,7 @@ $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
     Filter = 'CSV (*.csv)|*.csv'
 }
 $FolderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
-$outputpath = [Environment]::GetFolderPath('Desktop')
+$global:outputpath = [Environment]::GetFolderPath('Desktop') # Папка выгрузки по-умолчанию
 
 $form = New-Object System.Windows.Forms.Form
 $form.Text = 'Исправление новых строк CSV'
@@ -87,14 +87,15 @@ $startButton.Add_Click({
     if($FileBrowser.FileName.Contains(".csv")){
         $csv = $FileBrowser.FileName.Trim(".csv") + '_buffer.csv'
         Get-Content $FileBrowser.FileName | where {$_ -notmatch '^(\t* *)$'} > $csv
+        $firstLine = Get-Content $csv | Select-Object -First 1
         $reader = New-Object -TypeName System.IO.StreamReader -ArgumentList ($csv)
-        $writer = New-Object System.IO.StreamWriter -ArgumentList ((CheckFolder($FolderBrowser.SelectedPath)), $false, [System.Text.Encoding]::UTF8)
         $bufferString = ""
+
 
         while ($read = $reader.ReadLine()){
             if($read.IndexOf('"').Equals(0)) {
                 if ($bufferString -ne "" -and $bufferString.EndsWith('"')){
-                    $writer.WriteLine($bufferString);
+                    WriteLineToFile($bufferString)
                     $bufferString = $read
                 } else {
                     $bufferString += $read
@@ -102,18 +103,10 @@ $startButton.Add_Click({
             } else {
                 $bufferString += " " + $read
             }
-            
         }
-        $writer.WriteLine($bufferString);
-        
-        $writer.Close()
-        $writer.Dispose()
 
-        $labelStatus.ForeColor = "#826e27"
-        $labelStatus.Text = "Первый этап завершен..."
-
-        # Второй этап. Создание файлов на основе строки в "связи с".
-
+        $labelStatus.ForeColor = "Green"
+        $labelStatus.Text = "Готово"
 
     } else {
         $labelStatus.ForeColor = "Red"
@@ -132,12 +125,22 @@ $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
 $form.CancelButton = $cancelButton
 $form.Controls.Add($cancelButton)
 
-function CheckFolder($formFolder) {
-    if ($formFolder -eq "") {
-        return ($outputpath + "\zayavki.csv")
+$organizationsArray = New-Object collections.arraylist
+function WriteLineToFile($buffer, $fullfilename = $outputpath + "\zayavki.csv") {
+    if ($buffer.Contains("Accounts::::")) {
+        $filename = ($buffer -split '(Accounts::::.*?\^)')[1]
+        $filename = $filename.Replace('"','').Replace('Accounts::::','').Replace('«', '').Replace('»','').Replace('^','').Replace(' ','_')
+        $fullfilename = $FolderBrowser.SelectedPath + '\' + $filename + '.csv'
+        Write-Host($fullfilename)
+    }
+    if ($organizationsArray.Contains($fullfilename)) {
+        $buffer >> $fullfilename
     } else {
-        return ($formFolder + "\zayavki.csv")
-    };
+        $organizationsArray.Add($fullfilename)
+        $firstLine > $fullfilename
+        $buffer >> $fullfilename
+    }
+
 }
 
 $result = $form.ShowDialog()
